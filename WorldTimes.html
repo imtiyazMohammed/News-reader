@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <title>Welcome to World Times</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">World Times</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container my-3">
+        <h1>Trending <span class="badge badge-secondary">Now</span></h1>
+    </div>
+    <hr>
+    <div class="accordion" id="newsAccordion">
+        
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+        <script>
+            console.log('This is index.js file')
+// 1511b7aa7cfa4eb283bda8547cf84bf3
+
+// let source = 'the-times-of-india';
+// let apiKey = '1511b7aa7cfa4eb283bda8547cf84bf3'
+
+//grab the news container
+// https://gnews.io/api/v3/top-news?token=a8131dcb1fd6e0a68424cf1b112927e2
+let newsAccordion = document.getElementById('newsAccordion');
+
+// create an ajax get request
+const xhr = new XMLHttpRequest();
+xhr.open('GET', `https://gnews.io/api/v3/top-news?token=a8131dcb1fd6e0a68424cf1b112927e2`, true);
+xhr.onload = function () {
+    if (this.status === 200) {
+
+        let json = JSON.parse(this.responseText);
+        let articles = json.articles;
+        // console.log(articles);
+        let newsHtml = "";
+        articles.forEach(function(element,index) {
+            let news = `
+                        <div class="card">
+                            <div class="card-header" id="heading${index}">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                                        data-target="#collapse${index}" aria-expanded="true" aria-controls="collapse${index}">
+                                        <b>#Trending${index+1}  </b>${element["title"]}
+                                            </button>
+                                </h2>
+                            </div>
+
+                        <div id="collapse${index}" class="collapse" aria-labelledby="heading${index}" data-parent="#newsAccordion">
+                                <div class="card-body"> <a href = "${element["url"]}" target = "_blank">Read full article here</a> </div>
+                        </div>
+                    </div>`
+            newsHtml += news;
+        });
+        newsAccordion.innerHTML = newsHtml;
+    }
+    else {
+        console.log("Some error occured")
+    }
+}
+
+xhr.send();
+        </script>
+</body>
+
+</html>
